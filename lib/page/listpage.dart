@@ -35,7 +35,7 @@ class MyListPage extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushNamed(context, "/addTask");
                     },
-                    child: const Text("Tambah Task"),
+                    child: const Text("Halaman Tambah"),
                   ),
                 ),
               ],
