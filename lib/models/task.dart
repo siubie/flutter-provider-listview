@@ -1,6 +1,6 @@
 class Task {
   String name;
-  bool status;
+  int status;
 
   Task({
     required this.name,
