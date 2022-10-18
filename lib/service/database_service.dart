@@ -1,6 +1,8 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../models/task.dart';
+
 class DatabaseService {
   // Singleton pattern
   static final DatabaseService _databaseService = DatabaseService._internal();
@@ -8,6 +10,7 @@ class DatabaseService {
   DatabaseService._internal();
 
   static Database? _database;
+
   Future<Database> get database async {
     if (_database != null) return _database!;
     // Initialize the DB first time it is accessed
@@ -43,20 +46,20 @@ class DatabaseService {
   }
 
   // Define a function that inserts breeds into the database
-  // Future<void> insertBreed(Breed breed) async {
-  //   // Get a reference to the database.
-  //   final db = await _databaseService.database;
+  Future<void> insertTask(Task task) async {
+    // Get a reference to the database.
+    final db = await _databaseService.database;
 
-  //   // Insert the Breed into the correct table. You might also specify the
-  //   // `conflictAlgorithm` to use in case the same breed is inserted twice.
-  //   //
-  //   // In this case, replace any previous data.
-  //   await db.insert(
-  //     'breeds',
-  //     breed.toMap(),
-  //     conflictAlgorithm: ConflictAlgorithm.replace,
-  //   );
-  // }
+    // Insert the Breed into the correct table. You might also specify the
+    // `conflictAlgorithm` to use in case the same breed is inserted twice.
+    //
+    // In this case, replace any previous data.
+    await db.insert(
+      'task',
+      task.toMap(),
+      // conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
 
   // Future<void> insertDog(Dog dog) async {
   //   final db = await _databaseService.database;
@@ -68,16 +71,16 @@ class DatabaseService {
   // }
 
   // // A method that retrieves all the breeds from the breeds table.
-  // Future<List<Breed>> breeds() async {
-  //   // Get a reference to the database.
-  //   final db = await _databaseService.database;
+  Future<List<Task>> taskList() async {
+    // Get a reference to the database.
+    final db = await _databaseService.database;
 
-  //   // Query the table for all the Breeds.
-  //   final List<Map<String, dynamic>> maps = await db.query('breeds');
+    // Query the table for all the Breeds.
+    final List<Map<String, dynamic>> maps = await db.query('task');
 
-  //   // Convert the List<Map<String, dynamic> into a List<Breed>.
-  //   return List.generate(maps.length, (index) => Breed.fromMap(maps[index]));
-  // }
+    // Convert the List<Map<String, dynamic> into a List<Breed>.
+    return List.generate(maps.length, (index) => Task.fromMap(maps[index]));
+  }
 
   // Future<Breed> breed(int id) async {
   //   final db = await _databaseService.database;

@@ -19,6 +19,9 @@ class AddTaskPage extends StatelessWidget {
               decoration: const InputDecoration(
                 hintText: "Masukkan Task Baru",
               ),
+              onChanged: (value) {
+                context.read<Tasklist>().changeTaskName(value);
+              },
             ),
             const SizedBox(
               height: 50,
@@ -28,7 +31,7 @@ class AddTaskPage extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      context.read<Tasklist>().addNewTask();
+                      context.read<Tasklist>().addTask();
                       Navigator.pop(context);
                     },
                     child: const Text("Tambah Task Baru"),
