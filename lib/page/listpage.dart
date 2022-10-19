@@ -43,9 +43,10 @@ class _MyListPageState extends State<MyListPage> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       // context.read<Tasklist>().addTask();
-                      Navigator.pushNamed(context, "/addTask");
+                      await Navigator.pushNamed(context, "/addTask");
+                      context.read<Tasklist>().fetchTaskList();
                     },
                     child: const Text("Halaman Tambah"),
                   ),

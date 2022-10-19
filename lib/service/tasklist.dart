@@ -26,17 +26,6 @@ class Tasklist with ChangeNotifier {
     await _databaseService.insertTask(
       Task(name: _taskName, status: 0),
     );
-    _taskList = await _databaseService.taskList();
     notifyListeners();
   }
-  // final List<Task> _taskList = [];
-
-  // get taskList => _taskList;
-
-  // void addNewTask() {
-  //   _taskList.add(
-  //     Task(name: "Task Baru", status: 0),
-  //   );
-  //   notifyListeners();
-  // }
 }
