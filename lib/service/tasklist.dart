@@ -28,4 +28,9 @@ class Tasklist with ChangeNotifier {
     );
     notifyListeners();
   }
+
+  Future<void> deleteTask(Task task) async {
+    print("Delete Task ${task.name}");
+    notifyListeners();
+  }
 }
