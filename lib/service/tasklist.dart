@@ -22,9 +22,9 @@ class Tasklist with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addTask() async {
+  Future<void> addTask(String taskName) async {
     await _databaseService.insertTask(
-      Task(name: _taskName, status: 0),
+      Task(name: taskName, status: 0),
     );
     notifyListeners();
   }

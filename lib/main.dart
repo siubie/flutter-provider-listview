@@ -9,8 +9,10 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        // This initiates the provider.
         ChangeNotifierProvider<Tasklist>(
           create: (context) => Tasklist(),
+          // Initiating it here makes this provider data available everywhere in the application
         )
       ],
       child: const MyApp(),
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       routes: {
         "/": (context) => const MyListPage(),
-        "/addTask": (context) => const AddTaskPage(),
+        "/addTask": (context) => AddTaskPage(),
       },
       initialRoute: "/",
       title: 'Flutter Demo',
