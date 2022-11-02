@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:provider_listview/service/tasklist.dart';
 
 class AddTaskPage extends StatelessWidget {
-  const AddTaskPage({super.key});
+  AddTaskPage({super.key});
+
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +18,13 @@ class AddTaskPage extends StatelessWidget {
         child: Column(
           children: [
             TextFormField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: "Masukkan Task Baru",
+                errorText: context.watch<Tasklist>().taskName.error,
               ),
+              controller: _controller,
               onChanged: (value) {
-                context.read<Tasklist>().changeTaskName(value);
+                 context.read<Tasklist>().onTaskNameChange(value);
               },
             ),
             const SizedBox(
@@ -30,10 +34,19 @@ class AddTaskPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      context.read<Tasklist>().addTask();
-                      Navigator.pop(context, true);
-                    },
+                    onPressed: context.watch<Tasklist>().isActive
+                        ? () {
+                            context
+                                .read<Tasklist>()
+                                .setTaskName(_controller.text);
+                            if (context.read<Tasklist>().isValidated()) {
+                              context.read<Tasklist>().addNewTask(
+                                    _controller.text,
+                                  );
+                              Navigator.pop(context);
+                            }
+                          }
+                        : null,
                     child: const Text("Tambah Task Baru"),
                   ),
                 ),

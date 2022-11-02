@@ -135,4 +135,21 @@ class DatabaseService {
   //   final db = await _databaseService.database;
   //   await db.delete('dogs', where: 'id = ?', whereArgs: [id]);
   // }
+
+  Future<int> updateTask(String name) async {
+    final db = await _databaseService.database;
+    final data = {'name': "name", 'status': 2};
+    return db.update('task', data, where: "name = $name");
+  }
+
+  Future<void> deleteTask(String name) async {
+    final db = await _databaseService.database;
+    await db.delete(
+      'task',
+      // Use a `where` clause to delete a specific breed.
+      where: 'name = ?',
+      // Pass the Breed's id as a whereArg to prevent SQL injection.
+      whereArgs: [name],
+    );
+  }
 }
