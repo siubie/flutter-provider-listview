@@ -149,4 +149,14 @@ class DatabaseService {
       whereArgs: [name],
     );
   }
+
+  Future<void> updateItem(Task task, String newVal) async {
+    final db = await _databaseService.database;
+    await db.update(
+      'task',
+      {'name': newVal},
+      where: 'name = ?',
+      whereArgs: [task.name],
+    );
+  }
 }

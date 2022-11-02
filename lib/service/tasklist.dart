@@ -7,6 +7,7 @@ import 'database_service.dart';
 class Tasklist with ChangeNotifier {
   final DatabaseService _databaseService = DatabaseService();
   List<Task> _taskList = [];
+
   get taskList => _taskList;
   get taskName => _taskName;
   bool isActive = true;
@@ -79,10 +80,16 @@ class Tasklist with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteTask(Task task) async {
+  Future<void> deleteTaskList(Task task) async {
     await _databaseService.deleteTask(task.name);
     fetchTaskList();
     // print("Delete Task ${task.name}");
+    notifyListeners();
+  }
+
+  Future<void> updateTask(Task task, String newVal) async {
+    await _databaseService.updateItem(task, newVal);
+    await fetchTaskList();
     notifyListeners();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_listview/page/edittask.dart';
 
 import '../models/task.dart';
 import '../service/tasklist.dart';
@@ -37,9 +38,49 @@ class _MyListPageState extends State<MyListPage> {
                   return Dismissible(
                     key: UniqueKey(),
                     onDismissed: (direction) {
-                      context.read<Tasklist>().deleteTask(task);
+                      if (direction == DismissDirection.endToStart) {
+                        context.read<Tasklist>().deleteTaskList(task);
+                        context.read<Tasklist>().fetchTaskList();
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditTaskPage(
+                              task: task,
+                            ),
+                          ),
+                        );
+                        if (!mounted) return;
+                        context.read<Tasklist>().fetchTaskList();
+                      }
                     },
-                    background: Container(color: Colors.red),
+                    background: Container(
+                      color: Colors.green,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Row(
+                          children: [
+                            Icon(Icons.edit, color: Colors.white),
+                            Text('Edit Task',
+                                style: TextStyle(color: Colors.white)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    secondaryBackground: Container(
+                      color: Colors.red,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Icon(Icons.delete, color: Colors.white),
+                            Text('Delete Task',
+                                style: TextStyle(color: Colors.white)),
+                          ],
+                        ),
+                      ),
+                    ),
                     child: ListTile(
                       title:
                           Text(context.watch<Tasklist>().taskList[index].name),
