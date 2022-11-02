@@ -4,8 +4,8 @@ import 'package:provider_listview/service/tasklist.dart';
 
 class AddTaskPage extends StatelessWidget {
   AddTaskPage({super.key});
+
   final TextEditingController _controller = TextEditingController();
-  String task = ''; // This variable holds the tasks user wants to add
 
   @override
   Widget build(BuildContext context) {
@@ -18,15 +18,13 @@ class AddTaskPage extends StatelessWidget {
         child: Column(
           children: [
             TextFormField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: "Masukkan Task Baru",
+                errorText: context.watch<Tasklist>().taskName.error,
               ),
+              controller: _controller,
               onChanged: (value) {
-                // This saves the value in the TextField for every character the user types
-
-                context.read<Tasklist>().changeTaskName(value);
-                task =
-                    value; // The value in the TextField is referred to by the 'value' variable
+                context.read<Tasklist>().whenTaskNameChange(value);
               },
             ),
             const SizedBox(
@@ -36,12 +34,20 @@ class AddTaskPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      context.read<Tasklist>().addTask(task);
-                      //This is where I am calling the function to add a task to the list
+                    onPressed: context.watch<Tasklist>().isActive
+                        ? () {
+                            context
+                                .read<Tasklist>()
+                                .setTaskName(_controller.text);
 
-                      Navigator.pop(context, true);
-                    },
+                            if (context.read<Tasklist>().isValidated()) {
+                              context.read<Tasklist>().addTask(
+                                    _controller.text,
+                                  );
+                              Navigator.pop(context);
+                            }
+                          }
+                        : null,
                     child: const Text("Tambah Task Baru"),
                   ),
                 ),
